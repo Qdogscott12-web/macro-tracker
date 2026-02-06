@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Macro Tracker</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 400px;
+      margin: auto;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+    }
+    h2 { margin-top: 30px; }
+  </style>
+</head>
+<body>
+
+<h1>Macro Tracker</h1>
+
+<input id="food" placeholder="Food name">
+<input id="cal" type="number" placeholder="Calories">
+<input id="protein" type="number" placeholder="Protein (g)">
+<input id="carbs" type="number" placeholder="Carbs (g)">
+<button onclick="addFood()">Add</button>
+
+<h2>Today</h2>
+<p>Calories: <span id="tcal">0</span></p>
+<p>Protein: <span id="tprotein">0</span> g</p>
+<p>Carbs: <span id="tcarbs">0</span> g</p>
+
+<button onclick="reset()">Reset Day</button>
+
+<script>
+let totals = JSON.parse(localStorage.getItem("totals")) || {cal:0, protein:0, carbs:0};
+
+function update() {
+  tcal.innerText = totals.cal;
+  tprotein.innerText = totals.protein;
+  tcarbs.innerText = totals.carbs;
+  localStorage.setItem("totals", JSON.stringify(totals));
+}
+
+function addFood() {
+  totals.cal += Number(cal.value);
+  totals.protein += Number(protein.value);
+  totals.carbs += Number(carbs.value);
+  update();
+  food.value = cal.value = protein.value = carbs.value = "";
+}
+
+function reset() {
+  totals = {cal:0, protein:0, carbs:0};
+  update();
+}
+
+update();
+</script>
+
+</body>
+</html>
